@@ -95,8 +95,6 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
-
-            <laravel-updated></laravel-updated>
         </div>
 
         <script src="{{ asset('js/app.js') }}"></script>

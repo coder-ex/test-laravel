@@ -68,7 +68,7 @@
 - Примените разрешения для исполняемого файла к двоичному файлу:
 >
     sudo chmod +x /usr/local/bin/docker-compose
-    
+
 - получение образа docker:
 >
     docker build -t node-reload .
@@ -121,55 +121,27 @@
 
 3._***ДОНАСТРОЙКА СВЯЗКИ LAMP + REST***
 ---
-- создание чистого проекта, без компонентов symfony
->
-    composer create-project symfony/skeleton _name_project_
-- минимальный набор компонент для REST
->
-    composer require doctrine/doctrine-bundle doctrine/orm
-    composer require doctrine/doctrine-migrations-bundle
-    или по symfony.com
-    composer require symfony/orm-pack
-    composer require --dev symfony/maker-bundle
-    
-    composer require jms/serializer-bundle
-    composer require symfony/twig-bundle
-    или по symfony.com
-    composer require twig
-    
-    composer require sensio/framework-extra-bundle
-    composer require friendsofsymfony/rest-bundle
-    composer require symfony/validator
-    
-    добавление .htaccess в apache2
-    composer require symfony/apache-pack
-    добавление phpunit == latest версия например 8.5
-    composer require --dev phpunit/phpunit ^latest
-    
-    composer require annotations
 - команды консоли Laravel
 >
-    composer create-project --prefer-dist laravel/laravel project - инсталяция нового проекта
+    composer create-project --prefer-dist laravel/laravel project "7.0.*" - инсталяция нового проекта с версией 7.0.x
+    (с версией 8.0.x не все пока ровно)
     пароль для root == root (su)
     cd project
     php artisan - команды консоли
 
 4._**NODEJS ЗАПУСК ИНСТАЛЯЦИИ ШАБЛОНА В КОНТЕЙНЕРЕ**
 ---
-- установка на глобальном уровне:
-> ТОЛЬКО для версии!!! < 4.0.0
-    использовать gulpfile_v3.js предварительно переименовав в gulpfile.json
-    npm install -g gulp
-    файл не доработан до конца и нуждается в корректировке
+- установка на локальном уровне:
 >
-> ТОЛЬКО для версии!!! >= 4.0.0
-    npm install -g gulp-cli
-    использовать gulpfile_v4.js предварительно переименовав в gulpfile.json
-    файл не доработан до конца и нуждается в корректировке
+    npm install
+    (как установить bootstrap и vue смотреть в доках на https://laravel.com/docs/7.x/frontend
+    npm install && npm run dev
 
-- запуск тасков
+- запуск автосборку css и js
 >
-    gulp name_task
+    npm run watch-poll - автоматически отслеживает изменения и пересобирает в /public
+    (в package.json изменить версию с 8.0.0 на "sass-loader": "^7.0.0", что бы не было ошибок при пересборке)
+
 - команды npm
 >
     npm install - установка пакетов и связей на основе package.json
@@ -182,4 +154,33 @@
 >
     npm completion >> ~/.bashrc
     source ~/.bashrc
+- как подключить owl carousel в laravel ?
+>
+    Устанавливаем через npm или yarn:
+    npm i -s vue-owl-carouse
+    Подключаем в bootstrap.js 
+    - Laravel ниже 5.7 resources/assets/js/bootstrap.js
+    - Laravel 5.7 и выше resources/js/bootstrap.js
+    require('owl.carousel');
+    После window.$ = window.jQuery = require('jquery');
+    И там же или в app.js:
+      $(document).ready(function(){
+        $(".owl-carousel").owlCarousel();
+      });
+    Главное после подключения jQuery!
+    Также необходимо подключить css, для owl carousel это:
+    @import '~owl.carousel/dist/assets/owl.carousel';
+    В файле: app.scss
+    - Laravel 5.7: resources/sass/app.scss
+    - Laravel 5.6 и ниже: resources/assets/sass/app.scss
+    Затем необходимо пересоздать код: npm run dev
+    👉npm run dev - для режима разработки, без сжатия
+  
+    И уже в шаблоне обычная разметка для работы слайдера:
+      div class="owl-carousel"
+        div Your Content /div
+        div Your Content /div
+        div Your Content /div
+      /div
+    🙈В коде теги обрезаны!
 ---

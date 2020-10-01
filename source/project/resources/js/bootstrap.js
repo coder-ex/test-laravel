@@ -1,5 +1,4 @@
 window._ = require('lodash');
-window.Popper = require('popper.js').default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -11,8 +10,17 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
+    require('owl.carousel');
     require('bootstrap');
 } catch (e) {}
+
+$(document).ready(function () {
+    $('.owl-carousel').owlCarousel({
+        items: 1,
+        URLhashListener: true,
+        mouseDrag: false
+    });
+});
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
