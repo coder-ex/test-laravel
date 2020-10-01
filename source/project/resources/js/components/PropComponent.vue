@@ -31,7 +31,7 @@
         },
         methods: {
             update: function () {
-                console.log(this.urldata);
+                //console.log(this.urldata);
             }
         }
     }

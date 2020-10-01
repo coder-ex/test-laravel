@@ -22,6 +22,9 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('prop-component', require('./components/PropComponent.vue').default);
 Vue.component('ajax-component', require('./components/AjaxComponent.vue').default);
+Vue.component('chartline-component', require('./components/ChartLineComponent.vue').default);
+Vue.component('chartpie-component', require('./components/ChartPieComponent.vue').default);
+Vue.component('chartrandom-component', require('./components/ChartRandomComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
