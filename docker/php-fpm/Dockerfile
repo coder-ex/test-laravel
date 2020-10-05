@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -fyqq \
     fontconfig libc6 unzip libxrender1 libfreetype6-dev libjpeg62-turbo-dev \
     libpng-dev gnupg binutils-gold autoconf \
     nodejs npm \
-    nmap net-tools tcpdump \
+    nmap net-tools tcpdump sudo nano \
     g++ gcc gnupg libgcc1 linux-headers-amd64 make python
 
 # Install composer
@@ -54,11 +54,16 @@ RUN apt-get update && apt-get install -y libzip-dev zip \
 RUN pecl install xdebug \
      && docker-php-ext-enable xdebug
 
+# Install Redis
+RUN apt-get install -y redis-server
+
 # Create usermod && groupmod
 RUN usermod -u 1000 www-data \
-    && groupmod -g 1000 www-data
+    && groupmod -g 1000 www-data \
+    && usermod -aG sudo www-data
 
-RUN echo "root:root" | chpasswd
+RUN echo "root:r12345" | chpasswd \
+    && echo "www-data:u12345" | chpasswd
 
 # Copy existing application directory permissions
 RUN chown www-data:www-data /var/www
@@ -67,6 +72,7 @@ COPY --chown=www-data:www-data . /var/www/html
 #COPY ./php.ini /usr/local/etc/php/conf.d/local.ini
 COPY ./php.ini /usr/local/etc/php/php.ini
 COPY ./docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/
+COPY ./redis.conf /etc/redis/redis.conf
 
 RUN mkdir /source
 WORKDIR /var/www/html

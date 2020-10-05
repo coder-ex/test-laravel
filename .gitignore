@@ -3,9 +3,13 @@
 /.git/
 /source/db/
 /source/logs/
-/source/project/node_modules/
+/source/redis/
 /tmp_src/
-###> General for docker container ###
+###> END General for docker container ###
+
+###> Node JS ###
+/source/project/node_modules/
+###> END Node JS ###
 
 ###> laravel/framework-bundle ###
 /source/project/node_modules
@@ -20,4 +24,4 @@
 /source/project/Homestead.yaml
 /source/project/npm-debug.log
 /source/project/yarn-error.log
-###< laravel/framework-bundle ###
+###< END laravel/framework-bundle ###

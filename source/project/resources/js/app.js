@@ -25,6 +25,9 @@ Vue.component('ajax-component', require('./components/AjaxComponent.vue').defaul
 Vue.component('chartline-component', require('./components/ChartLineComponent.vue').default);
 Vue.component('chartpie-component', require('./components/ChartPieComponent.vue').default);
 Vue.component('chartrandom-component', require('./components/ChartRandomComponent.vue').default);
+Vue.component('socket-component', require('./components/SocketComponent.vue').default);
+Vue.component('socket-chat-component', require('./components/SocketChatComponent.vue').default);
+Vue.component('socket-private-chat-component', require('./components/SocketPrivateChatComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

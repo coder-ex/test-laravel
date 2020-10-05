@@ -1,7 +1,7 @@
 **УСТАНОВКА ШАБЛОНА**
 ---
-    docker + docker-compose + LAMP
-    apache v2.4
+    docker + docker-compose + nginx + php-fpm + mysql
+    nginx
     mysql v 5.7
     php v7.3
 
@@ -9,10 +9,10 @@
 > ***пример:***
 >- создание репо из bash:
 >
->   curl -X POST -v -u coder-ex@yandex.ru:pass_xxx -H "Content-Type: application/json" https://api.bitbucket.org/2.0/repositories/webcommands/blog-callboard -d '{"scm": "git", "project": { "key": "WTPROJ" }, "is_private": "true", "fork_policy": "no_public_forks" }'
+>   curl -X POST -v -u coder-ex@yandex.ru:pass_xxx -H "Content-Type: application/json" https://api.bitbucket.org/2.0/repositories/webcommands/template_laravel -d '{"scm": "git", "project": { "key": "WTPROJ" }, "is_private": "true", "fork_policy": "no_public_forks" }'
 >- получение данных о репо:
 >
->   curl -q -X GET -u coder-ex@yandex.ru:Pass_2019_01 -o curl_20 https://coder-ex@bitbucket.org/webcommands/template-docker-django-mysql
+>   curl -q -X GET -u coder-ex@yandex.ru:Pass_2019_01 -o curl_20 https://coder-ex@bitbucket.org/webcommands/template_laravel
 ***
 - перейти в каталог разработки - !! не проекта !!
 >
@@ -32,6 +32,9 @@
     git commit
     git show --name-only
     git push -u origin master
+- если репо создаем из командной строки, то
+>
+    git remote add origin https://coder-ex@bitbucket.org/webcommands/template_laravel.git
 
 2._***[DOCKER](https://docs.docker.com/install/linux/docker-ce/ubuntu/)***
 ---
@@ -119,7 +122,7 @@
     docker-compose rm -f - удаление временных файлов
     docker-compose run web django-admin.py startproject source . - сборка контейнеров с командой запуска для контейнера web
 
-3._***ДОНАСТРОЙКА СВЯЗКИ LAMP + REST***
+3._***ДОНАСТРОЙКА СВЯЗКИ REST***
 ---
 - команды консоли Laravel
 >
@@ -128,6 +131,30 @@
     пароль для root == root (su)
     cd project
     php artisan - команды консоли
+- установка REST (хранилище в памяти, не реляционная СУБД)
+>
+    apt-get install -y redis-server
+>    redis-server /etc/redis/redis.conf - запуск сервера
+>    redis-cli: ping -> ответ PONG - проверка
+>    redis-cli: BGSAVE или SAVE - создание db redis /var/lib/redis/dump.rdb
+- настройка redis во фреймворке
+>
+    изменить в .env BROADCAST_DRIVER=log на BROADCAST_DRIVER=redis
+    изменить в /config/database.php
+>    'redis' => [
+>        /*'client' => env('REDIS_CLIENT', 'phpredis'),*/
+>        'client' => env('REDIS_CLIENT', 'predis'),
+>        'options' => [
+>            'cluster' => env('REDIS_CLUSTER', 'redis'),
+>            'prefix' => "",
+>            /*'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),*/
+>        ],
+
+    composer require predis/predis
+    npm install express - (базовая библиотека для фреймворка NodeJS)
+    npm install ioredis - клиент для REDIS сервера
+    npm install socket.io - библиотека для обмена данными в реальном времени (websocket, сервер)
+    npm install socket.io-client - websocket, client
 
 4._**NODEJS ЗАПУСК ИНСТАЛЯЦИИ ШАБЛОНА В КОНТЕЙНЕРЕ**
 ---
@@ -137,7 +164,7 @@
     (как установить bootstrap и vue смотреть в доках на https://laravel.com/docs/7.x/frontend
     npm install && npm run dev
 
-- запуск автосборку css и js
+- запуск на автосборку css и js
 >
     npm run watch-poll - автоматически отслеживает изменения и пересобирает в /public
     (в package.json изменить версию с 8.0.0 на "sass-loader": "^7.0.0", что бы не было ошибок при пересборке)
@@ -158,7 +185,7 @@
 >
     Устанавливаем через npm или yarn:
     npm i -s vue-owl-carouse
-    Подключаем в bootstrap.js 
+    Подключаем в bootstrap.js
     - Laravel ниже 5.7 resources/assets/js/bootstrap.js
     - Laravel 5.7 и выше resources/js/bootstrap.js
     require('owl.carousel');
@@ -175,7 +202,7 @@
     - Laravel 5.6 и ниже: resources/assets/sass/app.scss
     Затем необходимо пересоздать код: npm run dev
     👉npm run dev - для режима разработки, без сжатия
-  
+
     И уже в шаблоне обычная разметка для работы слайдера:
       div class="owl-carousel"
         div Your Content /div

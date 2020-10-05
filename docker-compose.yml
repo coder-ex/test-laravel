@@ -6,11 +6,15 @@ services:
     container_name: test-php-frm
     volumes:
       - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-      - ${APP_PATH_HOST}/logs/xdebug:/var/log/xdebug 
+      - ${APP_PATH_HOST}/logs/xdebug:/var/log/xdebug
+      - ${APP_PATH_HOST}/logs/redis:/var/log/redis
+      - ${REDIS_PATH_DATA}:/var/lib/redis
     working_dir: ${APP_PATH_CONTAINER}
     environment:
       XDEBUG_CONFIG: "remote_host=192.168.222.1 remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
+    ports:
+      - "3000:3000"
     networks:
       - internal
 
@@ -78,5 +82,3 @@ networks:
       driver: default
       config:
         - subnet: 192.168.222.0/28
-
-
