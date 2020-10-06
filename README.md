@@ -4,6 +4,9 @@
     nginx
     mysql v 5.7
     php v7.3
+    
+    Примеры кода на Laravel по видео 1-13 на DKA_DEVELOP - Laravel и Vue (Realtime app)
+    https://www.youtube.com/playlist?list=PLD5U-C5KK50X1KcfueA73sGSjBsd8vgVG
 
 1._***GIT***
 > ***пример:***
